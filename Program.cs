@@ -8,14 +8,16 @@ var app = builder.Build();
 app.MapGet("/", () => "Hello World!");
 app.MapPost("/create-product", (Product product) => ProductService.CreateProduct(product));
 /* By Query Params */
-app.MapGet("/get-product", ([FromQuery] string id, [FromQuery] string name) =>
+app.MapGet("/get-product", ([FromQuery] string code) =>
 {
-  return id + " - " + name;
+  var product = ProductRepository.Instance.GetBy(code);
+  return product;
 });
 /* By Route */
-app.MapGet("/get-product/{id}/{name}", ([FromRoute] string id, [FromRoute] string name) =>
+app.MapGet("/get-product/{code}", ([FromRoute] string code) =>
 {
-  return id + " - " + name;
+  var product = ProductRepository.Instance.GetBy(code);
+  return product;
 });
 /* By Headers */
 app.MapGet("/get-product-header", (HttpRequest request) =>
