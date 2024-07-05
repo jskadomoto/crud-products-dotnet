@@ -4,13 +4,5 @@ var app = builder.Build();
 
 /* Endopoints */
 app.MapGet("/", () => "Hello World!");
-app.MapPost("/create-product", (Product product) => {
-  return product.Code + " - " + product.Name;
-});
+app.MapPost("/create-product", (Product product) => ProductService.createProduct(product));
 app.Run();
-
-/* Classes  */
-public class Product {
-  public required string Code { get; set; }
-  public required string Name { get; set; }
-}
