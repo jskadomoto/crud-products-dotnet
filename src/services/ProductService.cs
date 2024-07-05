@@ -1,7 +1,10 @@
 public static class ProductService
 {
-  public static string createProduct(Product product)
+  private static readonly ProductRepository repository = new ProductRepository();
+
+  public static ProductCreationResult CreateProduct(Product product)
   {
-    return product.Code + " - " + product.Name;
+    repository.Add(product);
+    return new ProductCreationResult(product, "Produto adicionado com sucesso", 200);
   }
 }

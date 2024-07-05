@@ -6,7 +6,7 @@ var app = builder.Build();
 
 /* Endopoints */
 app.MapGet("/", () => "Hello World!");
-app.MapPost("/create-product", (Product product) => ProductService.createProduct(product));
+app.MapPost("/create-product", (Product product) => ProductService.CreateProduct(product));
 /* By Query Params */
 app.MapGet("/get-product", ([FromQuery] string id, [FromQuery] string name) =>
 {
