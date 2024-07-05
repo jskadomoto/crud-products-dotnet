@@ -17,4 +17,9 @@ app.MapGet("/get-product/{id}/{name}", ([FromRoute] string id, [FromRoute] strin
 {
   return id + " - " + name;
 });
+/* By Headers */
+app.MapGet("/get-product-header", (HttpRequest request) =>
+{
+  return request.Headers["product-code"].ToString();
+});
 app.Run();
