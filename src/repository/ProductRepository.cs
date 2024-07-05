@@ -1,40 +1,37 @@
 public class ProductRepository
 {
-  public List<Product> Products { get; set; } = new List<Product>();
+  private static ProductRepository? _instance;
+  public List<Product> Products { get; set; }
+
+  private ProductRepository()
+  {
+    Products = new List<Product>();
+  }
+
+  public static ProductRepository Instance
+  {
+    get
+    {
+      if (_instance == null)
+      {
+        _instance = new ProductRepository();
+      }
+      return _instance;
+    }
+  }
 
   public void Add(Product product)
   {
-    if (Products == null)
-      Products = new List<Product>();
-
     Products.Add(product);
   }
 
   public ProductResult GetBy(string code)
   {
-    if (Products != null)
+    var product = Products.FirstOrDefault(p => p.Code == code);
+    if (product != null)
     {
-      var product = Products.FirstOrDefault(p => p.Code == code);
-      if (product != null)
-      {
-        return new ProductResult(product, "Produto encontrado");
-      }
+      return new ProductResult(product, "Produto encontrado");
     }
-
-    return new ProductResult(null, "Produto não encontrado");
-  }
-}
-
-public class ProductCreationResult
-{
-  public Product Product { get; set; }
-  public string Message { get; set; }
-  public int StatusCode { get; set; }
-
-  public ProductCreationResult(Product product, string message, int statusCode)
-  {
-    Product = product;
-    Message = message;
-    StatusCode = statusCode;
+    return new ProductResult(null, "Não encontrado");
   }
 }
