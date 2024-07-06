@@ -8,35 +8,30 @@ var app = builder.Build();
 /* GET */
 app.MapGet("/", () => "Hello World!");
 /* By Query Params */
-app.MapGet("/get-product", ([FromQuery] string code) =>
+app.MapGet("/products", ([FromQuery] string code) =>
 {
   var product = ProductRepository.Instance.GetBy(code);
   return product;
 });
 /* By Route */
-app.MapGet("/get-product/{code}", ([FromRoute] string code) =>
+app.MapGet("/products/{code}", ([FromRoute] string code) =>
 {
   var product = ProductRepository.Instance.GetBy(code);
   return product;
-});
-/* By Headers */
-app.MapGet("/get-product-header", (HttpRequest request) =>
-{
-  return request.Headers["product-code"].ToString();
 });
 
 /* POST */
-app.MapPost("/create-product", (Product product) => ProductService.CreateProduct(product));
+app.MapPost("/products", (Product product) => ProductService.CreateProduct(product));
 
 /* PUT */
-app.MapPut("/update-product", (Product product) => ProductService.UpdateProduct(product));
+app.MapPut("/products", (Product product) => ProductService.UpdateProduct(product));
 
 /* DELETE */
 /* By Route */
-app.MapDelete("/delete-product/{code}", ([FromRoute] string code) => ProductService.DeleteProduct(code));
+app.MapDelete("/products/{code}", ([FromRoute] string code) => ProductService.DeleteProduct(code));
 
 /* By Query */
-app.MapDelete("/delete-product", ([FromQuery] string code) => ProductService.DeleteProduct(code));
+app.MapDelete("/products", ([FromQuery] string code) => ProductService.DeleteProduct(code));
 
 
 app.Run();
