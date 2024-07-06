@@ -5,8 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 /* Endopoints */
+/* GET */
 app.MapGet("/", () => "Hello World!");
-app.MapPost("/create-product", (Product product) => ProductService.CreateProduct(product));
 /* By Query Params */
 app.MapGet("/get-product", ([FromQuery] string code) =>
 {
@@ -24,4 +24,15 @@ app.MapGet("/get-product-header", (HttpRequest request) =>
 {
   return request.Headers["product-code"].ToString();
 });
+
+/* POST */
+app.MapPost("/create-product", (Product product) => ProductService.CreateProduct(product));
+
+/* PUT */
+app.MapPut("/update-product", (Product product) => ProductService.UpdateProduct(product));
+
+/* DELETE */
+app.MapDelete("/delete-product/{code}", ([FromRoute] string code) => ProductService.DeleteProduct(code));
+
+
 app.Run();

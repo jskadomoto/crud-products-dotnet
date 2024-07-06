@@ -32,3 +32,16 @@ public class ProductCreationResult
     StatusCode = statusCode;
   }
 }
+
+
+public class ProductDeleteResult
+{
+  public string Message { get; set; }
+  public int StatusCode { get; set; }
+
+  public ProductDeleteResult(string message, int statusCode)
+  {
+    Message = message;
+    StatusCode = statusCode;
+  }
+}

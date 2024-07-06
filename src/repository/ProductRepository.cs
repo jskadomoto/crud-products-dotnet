@@ -34,4 +34,9 @@ public class ProductRepository
     }
     return new ProductResult(null, "Não encontrado");
   }
+
+  public static void Remove(Product product)
+  {
+    Instance.Products.Remove(product);
+  }
 }
