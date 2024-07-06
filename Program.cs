@@ -33,5 +33,4 @@ app.MapDelete("/products/{code}", ([FromRoute] string code) => ProductService.De
 /* By Query */
 app.MapDelete("/products", ([FromQuery] string code) => ProductService.DeleteProduct(code));
 
-
 app.Run();
