@@ -10,13 +10,13 @@ app.MapGet("/", () => "Hello World!");
 /* By Query Params */
 app.MapGet("/products", ([FromQuery] string code) =>
 {
-  var product = ProductRepository.Instance.GetBy(code);
+  var product = ProductService.GetProductByCode(code);
   return product;
 });
 /* By Route */
 app.MapGet("/products/{code}", ([FromRoute] string code) =>
 {
-  var product = ProductRepository.Instance.GetBy(code);
+  var product = ProductService.GetProductByCode(code);
   return product;
 });
 

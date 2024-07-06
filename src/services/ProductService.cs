@@ -1,28 +1,39 @@
 public static class ProductService
 {
-  public static ProductCreationResult CreateProduct(Product product)
+  public static IResult CreateProduct(Product product)
   {
     ProductRepository.Instance.Add(product);
-    return new ProductCreationResult(product, "Produto adicionado com sucesso", 200);
-  }
-  public static ProductCreationResult UpdateProduct(Product product)
-  {
-    var productSaved = ProductRepository.Instance.GetBy(product.Code);
-    if (productSaved.Product != null)
-    {
-      productSaved.Product.Name = product.Name;
-    }
-    return new ProductCreationResult(product, "Produto atualizado com sucesso", 200);
+    return Results.Created("/products/" + product.Code, new ProductCreationResult(product, $"Produto: '{product.Name}' adicionado com sucesso", 201));
   }
 
-  public static ProductDeleteResult DeleteProduct(string code)
+  public static IResult GetProductByCode(string code)
   {
-    var findProduct = ProductRepository.Instance.GetBy(code);
-    if (findProduct.Product != null)
+    var product = ProductRepository.Instance.GetBy(code);
+    if (product != null)
+      return Results.Ok(new ProductResult(product, "Produto encontrado"));
+
+    return Results.NotFound(new ProductResult(null, "Não encontrado"));
+  }
+
+  public static IResult UpdateProduct(Product product)
+  {
+    var productSaved = ProductRepository.Instance.GetBy(product.Code);
+    if (productSaved != null)
     {
-      ProductRepository.Remove(findProduct.Product);
-      return new ProductDeleteResult($"Produto {findProduct.Product.Name} deletado com sucesso", 200);
+      productSaved.Name = product.Name;
+      return Results.Ok(new ProductCreationResult(product, "Produto atualizado com sucesso", 200));
     }
-    return new ProductDeleteResult("Produto não encontrado", 404);
+    return Results.NotFound();
+  }
+
+  public static IResult DeleteProduct(string code)
+  {
+    var product = ProductRepository.Instance.GetBy(code);
+    if (product != null)
+    {
+      ProductRepository.Remove(product);
+      return Results.Ok(new ProductDeleteResult($"Produto: {product.Name} deletado com sucesso", 200));
+    }
+    return Results.NotFound(new ProductDeleteResult("Produto não encontrado", 404));
   }
 }

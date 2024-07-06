@@ -25,15 +25,11 @@ public class ProductRepository
     Products.Add(product);
   }
 
-  public ProductResult GetBy(string code)
+  public Product? GetBy(string code)
   {
-    var product = Products.FirstOrDefault(p => p.Code == code);
-    if (product != null)
-    {
-      return new ProductResult(product, "Produto encontrado");
-    }
-    return new ProductResult(null, "Não encontrado");
+    return Products.FirstOrDefault(p => p.Code == code);
   }
+  
 
   public static void Remove(Product product)
   {
