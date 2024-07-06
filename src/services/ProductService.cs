@@ -3,7 +3,7 @@ public static class ProductService
   public static IResult CreateProduct(Product product)
   {
     ProductRepository.Instance.Add(product);
-    return Results.Created("/products/" + product.Code, new ProductCreationResult(product, $"Produto: '{product.Name}' adicionado com sucesso", 201));
+    return Results.Created($"/products/{product.Code}", new ProductCreationResult(product, $"Produto: '{product.Name}' adicionado com sucesso", 201));
   }
 
   public static IResult GetProductByCode(string code)
