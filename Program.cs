@@ -32,7 +32,11 @@ app.MapPost("/create-product", (Product product) => ProductService.CreateProduct
 app.MapPut("/update-product", (Product product) => ProductService.UpdateProduct(product));
 
 /* DELETE */
+/* By Route */
 app.MapDelete("/delete-product/{code}", ([FromRoute] string code) => ProductService.DeleteProduct(code));
+
+/* By Query */
+app.MapDelete("/delete-product", ([FromQuery] string code) => ProductService.DeleteProduct(code));
 
 
 app.Run();
