@@ -1,6 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using System;
-
 public static class Config
 {
   public static IConfigurationRoot Configuration { get; }
