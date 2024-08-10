@@ -8,6 +8,8 @@ public class Product
   public string? Description { get; set; }
   public int CategoryId { get; set; }
   public required Category Category { get; set; }
+
+  public required List<Tag> Tags { get; set; }
 }
 
 
