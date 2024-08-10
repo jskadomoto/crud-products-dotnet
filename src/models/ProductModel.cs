@@ -6,6 +6,7 @@ public class Product
   public required string Code { get; set; }
   public required string Name { get; set; }
   public string? Description { get; set; }
+  public int CategoryId { get; set; }
   public required Category Category { get; set; }
 }
 
