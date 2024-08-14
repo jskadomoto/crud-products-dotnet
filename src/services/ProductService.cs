@@ -1,8 +1,23 @@
+
 public static class ProductService
 {
-  public static IResult CreateProduct(Product product)
+  public static IResult CreateProduct(ProductRequest productRequest, ApplicationDBContext context)
   {
-    ProductRepository.Instance.Add(product);
+    var category = context.Category.Where(category => category.Id == productRequest.categoryId).First();
+    if (category == null)
+    {
+      return Results.BadRequest(new { Message = "Categoria não encontrada." });
+    }
+
+    var product = new Product
+    {
+      Code = productRequest.Code,
+      Name = productRequest.Name,
+      Description = productRequest.Description,
+      Category = category
+    };
+    context.Products.Add(product);
+    context.SaveChanges();
     return Results.Created($"/products/{product.Code}", new ProductCreationResult(product, $"Produto: '{product.Name}' adicionado com sucesso", 201));
   }
 
@@ -35,5 +50,10 @@ public static class ProductService
       return Results.Ok(new ProductDeleteResult($"Produto: {product.Name} deletado com sucesso", 200));
     }
     return Results.NotFound(new ProductDeleteResult("Produto não encontrado", 404));
+  }
+
+  internal static object CreateProduct(Product product)
+  {
+    throw new NotImplementedException();
   }
 }

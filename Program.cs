@@ -22,7 +22,7 @@ app.MapGet("/products/{code}", ([FromRoute] string code) =>
 });
 
 /* POST */
-app.MapPost("/products", (Product product) => ProductService.CreateProduct(product));
+app.MapPost("/products", (ProductRequest productRequest, ApplicationDBContext context) => ProductService.CreateProduct(productRequest, context));
 
 /* PUT */
 app.MapPut("/products", (Product product) => ProductService.UpdateProduct(product));
