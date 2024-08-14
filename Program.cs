@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<ApplicationDBContext>();
+builder.Services.AddSqlServer<ApplicationDBContext>(builder.Configuration["Database:SqlServer"]);
 var app = builder.Build();
 
 /* Endopoints */
