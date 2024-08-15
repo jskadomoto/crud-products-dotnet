@@ -43,9 +43,24 @@ public static class ProductService
     .Where(product => product.Id == id).First();
 
     if (product != null)
-      return Results.Ok(new ProductResult(product, "Produto encontrado"));
+      return Results.Ok(new SingleProductResult(product, "Produto encontrado"));
 
-    return Results.NotFound(new ProductResult(null, "Não encontrado"));
+    return Results.NotFound(new SingleProductResult(null, "Não encontrado"));
+  }
+
+  public static IResult GetProducts(ApplicationDBContext context)
+  {
+    var products = context
+    .Products
+    .Include(product => product.Category)
+    .Include(product => product.Tags)
+    .ToList();
+
+    if (products != null && products.Count > 0)
+    {
+      return Results.Ok(new ProductResults(products, "Produtos encontrados"));
+    }
+    return Results.NotFound(new SingleProductResult(null, "Nenhum produto encontrado"));
   }
 
   public static IResult UpdateProduct(int id, ProductRequest productRequest, ApplicationDBContext context)

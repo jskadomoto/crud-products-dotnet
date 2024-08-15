@@ -13,12 +13,23 @@ public class Product
 }
 
 
-public class ProductResult
+public class SingleProductResult
 {
   public Product? Product { get; set; }
   public string Message { get; set; }
 
-  public ProductResult(Product? product, string message)
+  public SingleProductResult(Product? product, string message)
+  {
+    Product = product;
+    Message = message;
+  }
+}
+public class ProductResults
+{
+  public List<Product>? Product { get; set; }
+  public string Message { get; set; }
+
+  public ProductResults(List<Product>? product, string message)
   {
     Product = product;
     Message = message;

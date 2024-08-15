@@ -9,10 +9,14 @@ var app = builder.Build();
 /* GET */
 app.MapGet("/", () => "Hello World!");
 /* By Query Params */
-app.MapGet("/products", ([FromQuery] int id, ApplicationDBContext context) =>
+app.MapGet("/products", ([FromQuery] int? id, ApplicationDBContext context) =>
 {
-  var product = ProductService.GetProductById(id, context);
-  return product;
+  if (id == null || id == 0)
+  {
+    return ProductService.GetProducts(context);
+  }
+
+  return ProductService.GetProductById(id.Value, context);
 });
 /* By Route */
 app.MapGet("/products/{id}", ([FromRoute] int id, ApplicationDBContext context) =>
