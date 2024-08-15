@@ -25,7 +25,7 @@ app.MapGet("/products/{id}", ([FromRoute] int id, ApplicationDBContext context) 
 app.MapPost("/products", (ProductRequest productRequest, ApplicationDBContext context) => ProductService.CreateProduct(productRequest, context));
 
 /* PUT */
-app.MapPut("/products", (Product product) => ProductService.UpdateProduct(product));
+app.MapPut("/products/{id}", ([FromRoute] int id, ProductRequest productRequest, ApplicationDBContext context) => ProductService.UpdateProduct(id, productRequest, context));
 
 /* DELETE */
 /* By Route */

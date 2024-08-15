@@ -36,21 +36,50 @@ public static class ProductService
 
   public static IResult GetProductById(int id, ApplicationDBContext context)
   {
-    var product = context.Products.Include(product => product.Category).Include(product => product.Tags).Where(product => product.Id == id).First();
+    var product = context
+    .Products
+    .Include(product => product.Category)
+    .Include(product => product.Tags)
+    .Where(product => product.Id == id).First();
+
     if (product != null)
       return Results.Ok(new ProductResult(product, "Produto encontrado"));
 
     return Results.NotFound(new ProductResult(null, "Não encontrado"));
   }
 
-  public static IResult UpdateProduct(Product product)
+  public static IResult UpdateProduct(int id, ProductRequest productRequest, ApplicationDBContext context)
   {
-    var productSaved = ProductRepository.Instance.GetBy(product.Id);
+    var productSaved = context
+    .Products
+    .Include(product => product.Tags)
+    .Where(product => product.Id == id).First();
+
     if (productSaved != null)
     {
-      productSaved.Name = product.Name;
-      return Results.Ok(new ProductCreationResult(product, "Produto atualizado com sucesso", 200));
+
+      var category = context.Category.Where(category => category.Id == productRequest.categoryId).First();
+
+      productSaved.Name = productRequest.Name;
+      productSaved.Description = productRequest.Description;
+      productSaved.Code = productRequest.Code;
+      productSaved.Category = category;
+      productSaved.Tags = new List<Tag>();
+      if (productRequest.Tags != null)
+      {
+        productSaved.Tags = new List<Tag>();
+
+        foreach (var item in productRequest.Tags)
+        {
+          productSaved.Tags.Add(new Tag { Name = item });
+        }
+      }
+
+      context.SaveChanges();
+
+      return Results.Ok(new ProductCreationResult(productSaved, "Produto atualizado com sucesso", 200));
     }
+
     return Results.NotFound();
   }
 
