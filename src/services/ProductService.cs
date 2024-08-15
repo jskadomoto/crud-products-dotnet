@@ -48,17 +48,26 @@ public static class ProductService
     return Results.NotFound(new SingleProductResult(null, "Não encontrado"));
   }
 
-  public static IResult GetProducts(ApplicationDBContext context)
+  public static IResult GetProducts(ApplicationDBContext context, int page = 1, int limit = 10)
   {
+
+    if (page < 1) page = 1;
+    if (limit < 1) page = 10;
+
+    var totalResults = context.Products.Count();
+    var pageCount = (int)Math.Ceiling(totalResults / (double)limit);
+
     var products = context
     .Products
     .Include(product => product.Category)
     .Include(product => product.Tags)
+    .Skip((page - 1) * limit)
+    .Take(limit)
     .ToList();
 
-    if (products != null && products.Count > 0)
+    if (products.Count > 0)
     {
-      return Results.Ok(new ProductResults(products, "Produtos encontrados"));
+      return Results.Ok(new ProductResults(products, "Produtos encontrados com sucesso", page, limit, pageCount, totalResults));
     }
     return Results.NotFound(new SingleProductResult(null, "Nenhum produto encontrado"));
   }

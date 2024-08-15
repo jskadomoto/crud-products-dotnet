@@ -27,12 +27,20 @@ public class SingleProductResult
 public class ProductResults
 {
   public List<Product>? Product { get; set; }
-  public string Message { get; set; }
+  public string? Message { get; set; }
+  public int Page { get; set; }
+  public int Limit { get; set; }
+  public int PageCount { get; set; }
+  public int TotalResults { get; set; }
 
-  public ProductResults(List<Product>? product, string message)
+  public ProductResults(List<Product>? product, string? message, int page, int limit, int pageCount, int totalResults)
   {
     Product = product;
     Message = message;
+    Page = page;
+    Limit = limit;
+    PageCount = pageCount;
+    TotalResults = totalResults;
   }
 }
 
