@@ -29,9 +29,9 @@ app.MapPut("/products/{id}", ([FromRoute] int id, ProductRequest productRequest,
 
 /* DELETE */
 /* By Route */
-app.MapDelete("/products/{id}", ([FromRoute] int id) => ProductService.DeleteProduct(id));
+app.MapDelete("/products/{id}", ([FromRoute] int id, ApplicationDBContext context) => ProductService.DeleteProduct(id, context));
 
 /* By Query */
-app.MapDelete("/products", ([FromQuery] int id) => ProductService.DeleteProduct(id));
+app.MapDelete("/products", ([FromQuery] int id, ApplicationDBContext context) => ProductService.DeleteProduct(id, context));
 
 app.Run();

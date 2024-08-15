@@ -31,7 +31,7 @@ public static class ProductService
 
     context.Products.Add(product);
     context.SaveChanges();
-    return Results.Created($"/products/{product.Code}", new ProductCreationResult(product, $"Produto: '{product.Name}' adicionado com sucesso", 201));
+    return Results.Created($"/products/{product.Id}", new ProductCreationResult(product, $"Produto: '{product.Name}' adicionado com sucesso", 201));
   }
 
   public static IResult GetProductById(int id, ApplicationDBContext context)
@@ -83,14 +83,17 @@ public static class ProductService
     return Results.NotFound();
   }
 
-  public static IResult DeleteProduct(int id)
+  public static IResult DeleteProduct(int id, ApplicationDBContext context)
   {
-    var product = ProductRepository.Instance.GetBy(id);
+    var product = context.Products.Where(product => product.Id == id).First();
+
     if (product != null)
     {
-      ProductRepository.Remove(product);
+      context.Products.Remove(product);
+      context.SaveChanges();
       return Results.Ok(new ProductDeleteResult($"Produto: {product.Name} deletado com sucesso", 200));
     }
+
     return Results.NotFound(new ProductDeleteResult("Produto não encontrado", 404));
   }
 
