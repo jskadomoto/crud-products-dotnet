@@ -9,15 +9,15 @@ var app = builder.Build();
 /* GET */
 app.MapGet("/", () => "Hello World!");
 /* By Query Params */
-app.MapGet("/products", ([FromQuery] string code) =>
+app.MapGet("/products", ([FromQuery] int id, ApplicationDBContext context) =>
 {
-  var product = ProductService.GetProductByCode(code);
+  var product = ProductService.GetProductById(id, context);
   return product;
 });
 /* By Route */
-app.MapGet("/products/{code}", ([FromRoute] string code) =>
+app.MapGet("/products/{id}", ([FromRoute] int id, ApplicationDBContext context) =>
 {
-  var product = ProductService.GetProductByCode(code);
+  var product = ProductService.GetProductById(id, context);
   return product;
 });
 
@@ -29,9 +29,9 @@ app.MapPut("/products", (Product product) => ProductService.UpdateProduct(produc
 
 /* DELETE */
 /* By Route */
-app.MapDelete("/products/{code}", ([FromRoute] string code) => ProductService.DeleteProduct(code));
+app.MapDelete("/products/{id}", ([FromRoute] int id) => ProductService.DeleteProduct(id));
 
 /* By Query */
-app.MapDelete("/products", ([FromQuery] string code) => ProductService.DeleteProduct(code));
+app.MapDelete("/products", ([FromQuery] int id) => ProductService.DeleteProduct(id));
 
 app.Run();

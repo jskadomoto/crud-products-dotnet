@@ -1,4 +1,6 @@
 
+using Microsoft.EntityFrameworkCore;
+
 public static class ProductService
 {
   public static IResult CreateProduct(ProductRequest productRequest, ApplicationDBContext context)
@@ -32,9 +34,9 @@ public static class ProductService
     return Results.Created($"/products/{product.Code}", new ProductCreationResult(product, $"Produto: '{product.Name}' adicionado com sucesso", 201));
   }
 
-  public static IResult GetProductByCode(string code)
+  public static IResult GetProductById(int id, ApplicationDBContext context)
   {
-    var product = ProductRepository.Instance.GetBy(code);
+    var product = context.Products.Include(product => product.Category).Include(product => product.Tags).Where(product => product.Id == id).First();
     if (product != null)
       return Results.Ok(new ProductResult(product, "Produto encontrado"));
 
@@ -43,7 +45,7 @@ public static class ProductService
 
   public static IResult UpdateProduct(Product product)
   {
-    var productSaved = ProductRepository.Instance.GetBy(product.Code);
+    var productSaved = ProductRepository.Instance.GetBy(product.Id);
     if (productSaved != null)
     {
       productSaved.Name = product.Name;
@@ -52,9 +54,9 @@ public static class ProductService
     return Results.NotFound();
   }
 
-  public static IResult DeleteProduct(string code)
+  public static IResult DeleteProduct(int id)
   {
-    var product = ProductRepository.Instance.GetBy(code);
+    var product = ProductRepository.Instance.GetBy(id);
     if (product != null)
     {
       ProductRepository.Remove(product);

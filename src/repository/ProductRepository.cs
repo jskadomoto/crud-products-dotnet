@@ -25,9 +25,9 @@ public class ProductRepository
     Products.Add(product);
   }
 
-  public Product? GetBy(string code)
+  public Product? GetBy(int id)
   {
-    return Products.FirstOrDefault(p => p.Code == code);
+    return Products.FirstOrDefault(p => p.Id == id);
   }
   
 
